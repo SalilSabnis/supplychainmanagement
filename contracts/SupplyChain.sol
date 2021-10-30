@@ -9,8 +9,6 @@ contract SupplyChain {
         uint quantitySold;
         uint quantityInStock;
     }
-
-
      // Store accounts that have voted
     mapping(address => uint) public vendors;
 
@@ -37,25 +35,23 @@ contract SupplyChain {
         items[itemCount] = Item(itemCount, _name, initialQuantity,0,initialQuantity);
     }
 
-      function reserveQuantity (uint _itemId, uint _quantityToReserve) public {
-     
-         // require that the vendor has ordered max 5 times only
+      function reserveQuantity (uint _itemId) public { 
+        // require that the vendor has ordered max 2 times only
         require(vendors[msg.sender] <=2);
+
+         // require that the quantities for an item are greater than 0 before  reserving
+        require(items[_itemId].quantityInStock > 0);
 
         // require a valid item
         require(_itemId > 0 && _itemId <= itemCount);
 
           // record that vendor has reserved an item
         vendors[msg.sender] = vendors[msg.sender]+ 1;
-
-
-
         // update item quantities
         items[_itemId].quantitySold ++;
         items[_itemId].quantityInStock = items[_itemId].quantityInitial - items[_itemId].quantitySold ;
 
         // trigger reserve event
-        emit reserveEvent(_itemId);
-      
+        emit reserveEvent(_itemId);     
     }
 }
