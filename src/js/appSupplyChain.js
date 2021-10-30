@@ -98,7 +98,7 @@ App = {
       }
       return supplyChainInstance.vendors(App.account);
     }).then(function(itemsBooked) {
-      // Do not allow a vendor to reserve items if they already have booked 3 items
+      // Do not allow a vendor to reserve items if they already have booked 2 items
       if(itemsBooked >= 2) {
         $('form').hide();
       }
@@ -112,7 +112,7 @@ App = {
   reserveQuantity: function() {
     var itemId = $('#itemsSelect').val();
     App.contracts.SupplyChain.deployed().then(function(instance) {
-      return instance.reserveQuantity(itemId,2, { from: App.account });
+      return instance.reserveQuantity(itemId, { from: App.account });
     }).then(function(result) {
       // Wait for votes to update
       $("#content").hide();
